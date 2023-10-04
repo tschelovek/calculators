@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Vite App</title>
+    <link rel="stylesheet" href="./css/libs/choices.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+<!--    <script type="text/javascript" src="./js/libs/jquery.min.js"></script>-->
+    <script type="text/javascript" src="./js/libs/choices.min.js"></script>
+    <script src="./index.js"></script>
+    <style>
+        /*body {*/
+        /*    background-color: #2B2F34;*/
+        /*    color: white;*/
+        /*}*/
+    </style>
+</head>
+<body>
+<!--<button type="button" id="test">Click me, pls</button>-->
+
+<div class="container">
+    <h1 class="title_h1">Рассчитайте бюджет резки:</h1>
+
+    <form action="/" method="post" enctype="multipart/form-data" id="calc_plotter_form">
+        <div class="wrapper">
+            <div class="calc-plotter_cut">
+                <div class="calc__row">
+                    <h2>Расчёт стоимости плоттерной резки</h2>
+                </div>
+                <p>
+                    Подробнее об используемых плёнках:
+                </p>
+                <ul>
+                    <li>
+                        <a href="https://www.orafol.com/ru/europe/produkty/oracal-641-economy-cal"
+                           class="calc-plotter_cut__link">
+                            ORACAL® 641
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.orafol.com/ru/europe/produkty/oracal-8500-translucent-cal"
+                           class="calc-plotter_cut__link">
+                            ORACAL® 8500
+                        </a>
+                    </li>
+                </ul>
+
+                <fieldset>
+                    <legend>Конечные размеры</legend>
+                    <input type="number" id="plotter_length" name="plotter_length"/>
+                    <label for="plotter_length">Длина, см</label>
+                    <input type="number" id="plotter_width" name="plotter_width"/>
+                    <label for="plotter_width">Ширина, см</label>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Высота символов</legend>
+                    <label for="plotter_symbols_height" class="hidden-label">Выбор высоты символов</label>
+                    <select name="plotter_symbols_height" id="plotter_symbols_height">
+                        <option selected
+                                value="2"
+                                data-price-cut="350"
+                                data-price-extract="500"
+                                data-price-application="300"
+                        >2-4 см
+                        </option>
+                        <option value="5"
+                                data-price-cut="300"
+                                data-price-extract="400"
+                                data-price-application="300"
+                        >5-20 см
+                        </option>
+                        <option value="20"
+                                data-price-cut="200"
+                                data-price-extract="200"
+                                data-price-application="300"
+                        >20-50 см
+                        </option>
+                        <option value="50"
+                                data-price-cut="150"
+                                data-price-extract="100"
+                                data-price-application="300"
+                        >свыше 50 см
+                        </option>
+                    </select>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Выбор плёнки</legend>
+                    <div class="calc-plotter_cut__film">
+                        <label for="plotter_film_type" class="hidden-label">Выбор плёнки</label>
+                        <select name="plotter_film_type" id="plotter_film_type">
+                            <option value="475" selected>ORACAL® 641</option>
+                            <option value="970">ORACAL® 8500</option>
+                        </select>
+                        <input type="checkbox" id="plotter_no_film" name="plotter_no_film">
+                        <label for="plotter_no_film">Своя плёнка</label>
+                    </div>
+                    <!--                    <div class="calc-plotter_cut__film">-->
+                    <!--                        <input type="radio" id="plotter_oracal641" name="plotter_film_type">-->
+                    <!--                        <label for="plotter_oracal641">ORACAL® 641</label>-->
+                    <!--                        <input type="radio" id="plotter_oracal8500" name="plotter_film_type">-->
+                    <!--                        <label for="plotter_oracal8500">ORACAL® 8500</label>-->
+                    <!--                        <input type="radio" id="plotter_no_film" name="plotter_film_type">-->
+                    <!--                        <label for="plotter_no_film">Своя плёнка</label>-->
+                    <!--                    </div>-->
+                </fieldset>
+
+                <fieldset>
+                    <legend>Дополнительные Опции</legend>
+
+                    <div>
+                        <input type="radio" id="plotter_only_cut" name="plotter_only" checked/>
+                        <label for="plotter_only_cut">Только резка</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="plotter_cut_extract" name="plotter_only"/>
+                        <label for="plotter_cut_extract">Резка и выборка изображения</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="plotter_application" name="plotter_application"/>
+                        <label for="plotter_application">Нанесение монтажной пленки</label>
+                    </div>
+                </fieldset>
+
+                <div class="calc__total">
+                    <div class="calc__sum">
+                        <span>Стоимость резки: </span>
+                        <span class=""><span id="output_plotter_cut">0</span> ₽</span>
+                    </div>
+                    <div class="calc__sum">
+                        <span>Стоимость выборки: </span>
+                        <span class=""><span id="output_plotter_extract">0</span> ₽</span>
+                    </div>
+                    <div class="calc__sum">
+                        <span>Стоимость нанесения монтажной пленки: </span>
+                        <span class=""><span id="output_plotter_application">0</span> ₽</span>
+                    </div>
+                    <div class="calc__sum">
+                        <span>Стоимость пленки: </span>
+                        <span class=""><span id="output_plotter_film">0</span> ₽</span>
+                    </div>
+                    <div class="calc__btn-wrapper">
+                        <button type="button" class="btn btn_green" id="calculate_plotter">Рассчитать</button>
+                    </div>
+                </div>
+
+                <div class="errors">
+
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <form action="/" method="post" enctype="multipart/form-data" id="calc_milling_form">
+        <div class="wrapper">
+            <div class="calc-plotter_cut">
+                <div class="calc__row">
+                    <h2>Расчёт стоимости фрезерной резки</h2>
+                </div>
+
+                <fieldset>
+                    <legend>Тип материала</legend>
+                    <label for="milling_material" class="hidden-label">Тип материала</label>
+                    <select name="milling_material" id="milling_material">
+                        <option selected
+                                value="pvh"
+                                data-material-price="300"
+                        >ПВХ</option>
+                        <option value="acrylic" data-material-price="400">Акрил</option>
+                        <option value="plywood" data-material-price="500">Фанера</option>
+                    </select>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Толщина материала, мм</legend>
+                    <div class="thickness__wrapper">
+                        <div class="thickness thickness_pvh">
+                            <label for="milling_thickness_pvh" class="hidden-label">Толщина ПВХ</label>
+                            <select name="milling_thickness_pvh" id="milling_thickness_pvh">
+                                <option selected
+                                        value="3"
+                                        data-price-cut="50">3</option>
+                                <option value="4"
+                                        data-price-cut="60">4</option>
+                                <option value="5"
+                                        data-price-cut="70">5</option>
+                                <option value="6"
+                                        data-price-cut="80">6</option>
+                                <option value="7"
+                                        data-price-cut="90">7</option>
+                                <option value="8"
+                                        data-price-cut="100">8</option>
+                                <option value="9"
+                                        data-price-cut="110">9</option>
+                                <option value="10"
+                                        data-price-cut="120">10</option>
+                            </select>
+                        </div>
+                        <div class="thickness thickness_acrylic" style="display: none">
+                            <label for="milling_thickness_acrylic" class="hidden-label">Толщина Акрила</label>
+                            <select name="milling_thickness_acrylic" id="milling_thickness_acrylic">
+                                <option selected
+                                        value="2"
+                                        data-price-cut="50">2</option>
+                                <option value="3"
+                                        data-price-cut="60">3</option>
+                                <option value="5"
+                                        data-price-cut="70">5</option>
+                                <option value="6"
+                                        data-price-cut="80">6</option>
+                                <option value="8"
+                                        data-price-cut="100">8</option>
+                                <option value="10"
+                                        data-price-cut="120">10</option>
+                            </select>
+                        </div>
+                        <div class="thickness thickness_plywood" style="display: none">
+                            <label for="milling_thickness_plywood" class="hidden-label">Толщина фанеры</label>
+                            <select name="milling_thickness_plywood" id="milling_thickness_plywood">
+                                <option selected value="3"
+                                        data-price-cut="60">3</option>
+                                <option value="6"
+                                        data-price-cut="80">6</option>
+                                <option value="10"
+                                        data-price-cut="120">10</option>
+                                <option value="12"
+                                        data-price-cut="150">12</option>
+                            </select>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Использование материала</legend>
+
+                    <div>
+                        <label for="milling_material_client">свой материал</label>
+                        <input type="radio" id="milling_material_client" name="milling_material_owner"/>
+                    </div>
+                    <div>
+                        <label for="milling_material_our">наш материал</label>
+                        <input type="radio" id="milling_material_our" name="milling_material_owner" checked/>
+                        <div class="our-material">
+                            <label for="milling_sheet_area">Площадь материала, м</label>
+                            <input type="number" id="milling_sheet_area" name="milling_sheet_area"/>
+                            <label for="milling_sheet_amount">Количество листов, шт</label>
+                            <input type="number" id="milling_sheet_amount" name="milling_sheet_amount"/>
+                        </div>
+                    </div>
+
+                </fieldset>
+
+                <fieldset>
+                    <legend>Длина резки</legend>
+
+                    <label for="milling_cutting_length">Длина резки, м</label>
+                    <input type="number" id="milling_cutting_length" name="milling_cutting_length"/>
+
+                </fieldset>
+
+                <fieldset>
+                    <legend>Отверстия</legend>
+
+                    <label for="milling_holes_amount">Количество отверстий</label>
+                    <input type="number" id="milling_holes_amount" name="milling_holes_amount"/>
+                    <label for="milling_holes_diameter">Диаметр отверстий</label>
+                    <select name="milling_holes_diameter" id="milling_holes_diameter">
+                        <option selected value="31">1</option>
+                        <option value="32">2</option>
+                        <option value="33">3</option>
+                        <option value="34">4</option>
+                        <option value="35">5</option>
+                        <option value="36">6</option>
+                        <option value="37">7</option>
+                        <option value="38">8</option>
+                        <option value="39">9</option>
+                        <option value="42">10</option>
+                    </select>
+
+                </fieldset>
+
+                <div class="calc__total">
+                    <div class="calc__sum">
+                        <span>Стоимость резки: </span>
+                        <span class=""><span id="output_milling_cut">0</span> ₽</span>
+                    </div>
+                    <div class="calc__sum">
+                        <span>Стоимость отверстий: </span>
+                        <span class=""><span id="output_milling_holes">0</span> ₽</span>
+                    </div>
+                    <div class="calc__total__sum">
+                        <span>Стоимость материала: </span>
+                        <span class=""><span id="output_milling_material">0</span> ₽</span>
+                    </div>
+                    <div class="calc__total__btn-wrapper">
+                        <button type="button" class="btn btn_green" id="calculate_milling">Рассчитать</button>
+                    </div>
+                </div>
+
+                <div class="errors">
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

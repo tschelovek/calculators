@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "module": "umd",
+    "moduleResolution": "nodenext",
+    "target": "es6",
+    "sourceMap": true,
+    "removeComments": false
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

@@ -1,0 +1,35 @@
+.input_hidden, .hidden-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  visibility: hidden;
+}
+
+#milling_material_our + .our-material {
+  display: none;
+}
+
+#milling_material_our:checked + .our-material {
+  display: block;
+}
+
+.calc-furniture__total__sum {
+  margin: 1em 0;
+}
+.calc-furniture__target {
+  max-width: 360px;
+}
+.calc-furniture__target__numbers {
+  display: flex;
+  justify-content: space-between;
+}
+.calc-furniture__target__numbers .limit {
+  font-size: 12px;
+}
+
+input:invalid {
+  border: red;
+}
+
+/*# sourceMappingURL=style.css.map */

@@ -1,0 +1,27 @@
+.input_hidden, .hidden-label
+  position: absolute
+  width: 1px
+  height: 1px
+  opacity: 0
+  visibility: hidden
+
+#milling_material_our + .our-material
+  display: none
+
+#milling_material_our:checked + .our-material
+  display: block
+
+
+.calc-furniture
+  &__total__sum
+    margin: 1em 0
+  &__target
+    max-width: 360px
+    &__numbers
+      display: flex
+      justify-content: space-between
+      .limit
+        font-size: 12px
+
+input:invalid
+  border: red
