@@ -6,7 +6,7 @@
     <title>Vite App</title>
     <link rel="stylesheet" href="./css/libs/choices.min.css">
     <link rel="stylesheet" href="./css/style.css">
-<!--    <script type="text/javascript" src="./js/libs/jquery.min.js"></script>-->
+    <!--    <script type="text/javascript" src="./js/libs/jquery.min.js"></script>-->
     <script type="text/javascript" src="./js/libs/choices.min.js"></script>
     <script src="./index.js"></script>
     <style>
@@ -57,43 +57,39 @@
                 <fieldset>
                     <legend>Высота символов</legend>
                     <label for="plotter_symbols_height" class="hidden-label">Выбор высоты символов</label>
-                    <select name="plotter_symbols_height" id="plotter_symbols_height">
-                        <option selected
-                                value="2"
-                                data-price-cut="350"
-                                data-price-extract="500"
-                                data-price-application="300"
-                        >2-4 см
-                        </option>
-                        <option value="5"
-                                data-price-cut="300"
-                                data-price-extract="400"
-                                data-price-application="300"
-                        >5-20 см
-                        </option>
-                        <option value="20"
-                                data-price-cut="200"
-                                data-price-extract="200"
-                                data-price-application="300"
-                        >20-50 см
-                        </option>
-                        <option value="50"
-                                data-price-cut="150"
-                                data-price-extract="100"
-                                data-price-application="300"
-                        >свыше 50 см
-                        </option>
-                    </select>
+                    <div class="select-wrapper plotter_symbols_data-container"
+                         data-price-cut_2="350"
+                         data-price-extract_2="500"
+                         data-price-application_2="300"
+                         data-price-cut_5="300"
+                         data-price-extract_5="400"
+                         data-price-application_5="300"
+                         data-price-cut_20="200"
+                         data-price-extract_20="200"
+                         data-price-application_20="300"
+                         data-price-cut_50="150"
+                         data-price-extract_50="100"
+                         data-price-application_50="300"
+                    >
+                        <select name="plotter_symbols_height" id="plotter_symbols_height">
+                            <option selected value="2">2-4 см</option>
+                            <option value="5">5-20 см</option>
+                            <option value="20">20-50 см</option>
+                            <option value="50">свыше 50 см</option>
+                        </select>
+                    </div>
                 </fieldset>
 
                 <fieldset>
                     <legend>Выбор плёнки</legend>
                     <div class="calc-plotter_cut__film">
                         <label for="plotter_film_type" class="hidden-label">Выбор плёнки</label>
-                        <select name="plotter_film_type" id="plotter_film_type">
-                            <option value="475" selected>ORACAL® 641</option>
-                            <option value="970">ORACAL® 8500</option>
-                        </select>
+                        <div class="select-wrapper">
+                            <select name="plotter_film_type" id="plotter_film_type">
+                                <option value="475" selected>ORACAL® 641</option>
+                                <option value="970">ORACAL® 8500</option>
+                            </select>
+                        </div>
                         <input type="checkbox" id="plotter_no_film" name="plotter_no_film">
                         <label for="plotter_no_film">Своя плёнка</label>
                     </div>
@@ -163,14 +159,17 @@
                 <fieldset>
                     <legend>Тип материала</legend>
                     <label for="milling_material" class="hidden-label">Тип материала</label>
-                    <select name="milling_material" id="milling_material">
-                        <option selected
-                                value="pvh"
-                                data-material-price="300"
-                        >ПВХ</option>
-                        <option value="acrylic" data-material-price="400">Акрил</option>
-                        <option value="plywood" data-material-price="500">Фанера</option>
-                    </select>
+                    <div class="select-wrapper data-container"
+                         data-price_pvh="300"
+                         data-price_acrylic="400"
+                         data-price_plywood="500"
+                    >
+                        <select name="milling_material" id="milling_material">
+                            <option selected value="pvh">ПВХ</option>
+                            <option value="acrylic">Акрил</option>
+                            <option value="plywood">Фанера</option>
+                        </select>
+                    </div>
                 </fieldset>
 
                 <fieldset>
@@ -178,56 +177,64 @@
                     <div class="thickness__wrapper">
                         <div class="thickness thickness_pvh">
                             <label for="milling_thickness_pvh" class="hidden-label">Толщина ПВХ</label>
-                            <select name="milling_thickness_pvh" id="milling_thickness_pvh">
-                                <option selected
-                                        value="3"
-                                        data-price-cut="50">3</option>
-                                <option value="4"
-                                        data-price-cut="60">4</option>
-                                <option value="5"
-                                        data-price-cut="70">5</option>
-                                <option value="6"
-                                        data-price-cut="80">6</option>
-                                <option value="7"
-                                        data-price-cut="90">7</option>
-                                <option value="8"
-                                        data-price-cut="100">8</option>
-                                <option value="9"
-                                        data-price-cut="110">9</option>
-                                <option value="10"
-                                        data-price-cut="120">10</option>
-                            </select>
+                            <div class="select-wrapper data-container"
+                                 data-price_3="50"
+                                 data-price_4="60"
+                                 data-price_5="70"
+                                 data-price_6="80"
+                                 data-price_7="90"
+                                 data-price_8="100"
+                                 data-price_9="110"
+                                 data-price_10="120"
+                            >
+                                <select name="milling_thickness_pvh" id="milling_thickness_pvh">
+                                    <option selected value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="thickness thickness_acrylic" style="display: none">
                             <label for="milling_thickness_acrylic" class="hidden-label">Толщина Акрила</label>
-                            <select name="milling_thickness_acrylic" id="milling_thickness_acrylic">
-                                <option selected
-                                        value="2"
-                                        data-price-cut="50">2</option>
-                                <option value="3"
-                                        data-price-cut="60">3</option>
-                                <option value="5"
-                                        data-price-cut="70">5</option>
-                                <option value="6"
-                                        data-price-cut="80">6</option>
-                                <option value="8"
-                                        data-price-cut="100">8</option>
-                                <option value="10"
-                                        data-price-cut="120">10</option>
-                            </select>
+                            <div class="select-wrapper data-container"
+                                 data-price_2="50"
+                                 data-price_3="60"
+                                 data-price_5="70"
+                                 data-price_6="80"
+                                 data-price_8="90"
+                                 data-price_10="100"
+                            >
+                                <select name="milling_thickness_acrylic" id="milling_thickness_acrylic">
+                                    <option selected value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="8">8</option>
+                                    <option value="10">10</option>
+                                </select>
+                            </div>
+
                         </div>
                         <div class="thickness thickness_plywood" style="display: none">
                             <label for="milling_thickness_plywood" class="hidden-label">Толщина фанеры</label>
-                            <select name="milling_thickness_plywood" id="milling_thickness_plywood">
-                                <option selected value="3"
-                                        data-price-cut="60">3</option>
-                                <option value="6"
-                                        data-price-cut="80">6</option>
-                                <option value="10"
-                                        data-price-cut="120">10</option>
-                                <option value="12"
-                                        data-price-cut="150">12</option>
-                            </select>
+                            <div class="select-wrapper data-container"
+                                 data-price_3="50"
+                                 data-price_6="80"
+                                 data-price_10="120"
+                                 data-price_12="150"
+                            >
+                                <select name="milling_thickness_plywood" id="milling_thickness_plywood">
+                                    <option selected value="3">3</option>
+                                    <option value="6">6</option>
+                                    <option value="10">10</option>
+                                    <option value="12">12</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </fieldset>
@@ -235,10 +242,6 @@
                 <fieldset>
                     <legend>Использование материала</legend>
 
-                    <div>
-                        <label for="milling_material_client">свой материал</label>
-                        <input type="radio" id="milling_material_client" name="milling_material_owner"/>
-                    </div>
                     <div>
                         <label for="milling_material_our">наш материал</label>
                         <input type="radio" id="milling_material_our" name="milling_material_owner" checked/>
@@ -248,6 +251,10 @@
                             <label for="milling_sheet_amount">Количество листов, шт</label>
                             <input type="number" id="milling_sheet_amount" name="milling_sheet_amount"/>
                         </div>
+                    </div>
+                    <div>
+                        <label for="milling_material_client">свой материал</label>
+                        <input type="radio" id="milling_material_client" name="milling_material_owner"/>
                     </div>
 
                 </fieldset>
@@ -266,19 +273,31 @@
                     <label for="milling_holes_amount">Количество отверстий</label>
                     <input type="number" id="milling_holes_amount" name="milling_holes_amount"/>
                     <label for="milling_holes_diameter">Диаметр отверстий</label>
-                    <select name="milling_holes_diameter" id="milling_holes_diameter">
-                        <option selected value="31">1</option>
-                        <option value="32">2</option>
-                        <option value="33">3</option>
-                        <option value="34">4</option>
-                        <option value="35">5</option>
-                        <option value="36">6</option>
-                        <option value="37">7</option>
-                        <option value="38">8</option>
-                        <option value="39">9</option>
-                        <option value="42">10</option>
-                    </select>
-
+                    <div class="select-wrapper data-container"
+                         data-price_1="30"
+                         data-price_2="40"
+                         data-price_3="50"
+                         data-price_4="60"
+                         data-price_5="70"
+                         data-price_6="80"
+                         data-price_7="90"
+                         data-price_8="100"
+                         data-price_9="110"
+                         data-price_10="120"
+                    >
+                        <select name="milling_holes_diameter" id="milling_holes_diameter">
+                            <option selected value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </div>
                 </fieldset>
 
                 <div class="calc__total">
@@ -294,8 +313,171 @@
                         <span>Стоимость материала: </span>
                         <span class=""><span id="output_milling_material">0</span> ₽</span>
                     </div>
+                    <div class="calc__total__sum">
+                        <span>Итоговая стоимость: </span>
+                        <span class=""><span id="output_milling_total">0</span> ₽</span>
+                    </div>
                     <div class="calc__total__btn-wrapper">
                         <button type="button" class="btn btn_green" id="calculate_milling">Рассчитать</button>
+                    </div>
+                </div>
+
+                <div class="errors">
+
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <form action="/" method="post" enctype="multipart/form-data" id="calc_laser_form">
+        <div class="wrapper">
+            <div class="calc-plotter_cut">
+                <div class="calc__row">
+                    <h2>Расчёт стоимости лазерной резки</h2>
+                </div>
+
+                <fieldset>
+                    <legend>Тип материала</legend>
+                    <label for="laser_material" class="hidden-label">Тип материала</label>
+                    <div class="select-wrapper data-container"
+                         data-price_acrylic="300"
+                         data-price_plexiglas="400"
+                         data-price_pet="500"
+                    >
+                        <select name="laser_material" id="laser_material">
+                            <option selected value="acrylic">Акрил</option>
+                            <option value="plexiglas">Оргстекло</option>
+                            <option value="pet">ПЭТ</option>
+                        </select>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Толщина материала, мм</legend>
+                    <div class="thickness__wrapper">
+                        <div class="thickness thickness_acrylic">
+                            <label for="laser_thickness_acrylic" class="hidden-label">Толщина Акрила</label>
+                            <div class="select-wrapper data-container"
+                                 data-price_1="30"
+                                 data-price_2="40"
+                                 data-price_3="50"
+                                 data-price_4="60"
+                                 data-price_5="70"
+                                 data-price_6="80"
+                                 data-price_7="90"
+                                 data-price_8="100"
+                                 data-price_9="110"
+                                 data-price_10="120"
+                                 data-price_11="140"
+                                 data-price_12="160"
+                            >
+                                <select name="laser_thickness_acrylic" id="laser_thickness_acrylic">
+                                    <option selected value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="thickness thickness_plexiglas" style="display: none">
+                            <label for="laser_thickness_plexiglas" class="hidden-label">Толщина оргстекла</label>
+                            <div class="select-wrapper data-container"
+                                 data-price_1="130"
+                                 data-price_2="140"
+                                 data-price_3="150"
+                                 data-price_4="160"
+                                 data-price_5="170"
+                                 data-price_6="180"
+                                 data-price_7="190"
+                                 data-price_8="200"
+                                 data-price_9="210"
+                                 data-price_10="220"
+                                 data-price_11="240"
+                                 data-price_12="260"
+                            >
+                                <select name="laser_thickness_plexiglas" id="laser_thickness_plexiglas">
+                                    <option selected value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="thickness thickness_pet" style="display: none">
+                            <label for="laser_thickness_pet" class="hidden-label">Толщина ПЭТ</label>
+                            <div class="select-wrapper data-container"
+                                 data-price_5="50"
+                                 data-price_7="70"
+                                 data-price_10="100"
+                            >
+                                <select name="laser_thickness_pet" id="laser_thickness_pet">
+                                    <option selected value="5">0,5</option>
+                                    <option value="7">0,7</option>
+                                    <option value="10">1</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Использование материала</legend>
+
+                    <div>
+                        <label for="laser_material_our">наш материал</label>
+                        <input type="radio" id="laser_material_our" name="laser_material_owner" checked/>
+                        <div class="our-material">
+                            <label for="laser_sheet_area">Площадь листа материала, м</label>
+                            <input type="number" id="laser_sheet_area" name="laser_sheet_area"/>
+                            <label for="laser_sheet_amount">Количество листов, шт</label>
+                            <input type="number" id="laser_sheet_amount" name="laser_sheet_amount"/>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="laser_material_client">свой материал</label>
+                        <input type="radio" id="laser_material_client" name="laser_material_owner"/>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Длина резки</legend>
+
+                    <label for="laser_cutting_length">Длина резки на одном листе, м</label>
+                    <input type="number" id="laser_cutting_length" name="laser_cutting_length"/>
+                </fieldset>
+
+                <div class="calc__total">
+                    <div class="calc__sum">
+                        <span>Стоимость резки: </span>
+                        <span class=""><span id="output_laser_cut">0</span> ₽</span>
+                    </div>
+                    <div class="calc__total__sum">
+                        <span>Стоимость материала: </span>
+                        <span class=""><span id="output_laser_material">0</span> ₽</span>
+                    </div>
+                    <div class="calc__total__sum">
+                        <span>Итоговая стоимость: </span>
+                        <span class=""><span id="output_laser_total">0</span> ₽</span>
+                    </div>
+                    <div class="calc__total__btn-wrapper">
+                        <button type="button" class="btn btn_green" id="calculate_laser">Рассчитать</button>
                     </div>
                 </div>
 

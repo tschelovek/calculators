@@ -28,6 +28,10 @@
   font-size: 12px;
 }
 
+.calc-plotter_cut .select-wrapper {
+  max-width: 500px;
+}
+
 input:invalid {
   border: red;
 }

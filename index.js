@@ -40,8 +40,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!inputLength.value.trim() || !inputWidth.value.trim()) {
                 return;
             }
-            const selectedOption = symbolsHeightSelect.options[symbolsHeightSelect.selectedIndex];
-            const { priceCut, priceExtract, priceApplication } = selectedOption.dataset;
+            const dataContainer = symbolsHeightSelect.closest('.plotter_symbols_data-container');
+            const suffix = "_" + (symbolsHeightSelect.value).toString();
+            const { [`priceCut${suffix}`]: priceCut, [`priceExtract${suffix}`]: priceExtract, [`priceApplication${suffix}`]: priceApplication } = dataContainer.dataset;
             const filmPrice = filmSelect.disabled ? 0 : parseInt(filmSelect.value);
             const areaSqCM = parseInt(inputLength.value) * parseInt(inputWidth.value);
             const areaSqM = areaSqCM / 10000;
@@ -69,83 +70,170 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })();
     /**
-     * Калькулятор фрезерной резки
+     * Калькуляторы фрезерной и лазерной резки
      */
     (function () {
-        const selectMaterial = document.getElementById('milling_material');
-        const selectThicknessPvh = document.getElementById('milling_thickness_pvh');
-        const selectThicknessAcrylic = document.getElementById('milling_thickness_acrylic');
-        const selectThicknessPlywood = document.getElementById('milling_thickness_plywood');
+        function getDatasetPriceBySelect(select) {
+            const dataContainer = select.closest('.data-container');
+            const value = select.value;
+            return parseInt(dataContainer.dataset[`price_${value}`]);
+        }
+        /**
+         * Калькулятор фрезерной резки
+         */
+        const selectMillingMaterial = document.getElementById('milling_material');
+        const selectMillingThicknessPvh = document.getElementById('milling_thickness_pvh');
+        const selectMillingThicknessAcrylic = document.getElementById('milling_thickness_acrylic');
+        const selectMillingThicknessPlywood = document.getElementById('milling_thickness_plywood');
         const selectHolesDiameter = document.getElementById('milling_holes_diameter');
         const inputHolesAmount = document.getElementById('milling_holes_amount');
-        const checkboxMaterialClient = document.getElementById('milling_material_client');
-        const inputCuttingLength = document.getElementById('milling_cutting_length');
-        const inputArea = document.getElementById('milling_sheet_area');
-        const outputCut = document.getElementById('output_milling_cut');
-        const outputHoles = document.getElementById('output_milling_holes');
-        const outputMaterial = document.getElementById('output_milling_material');
-        const thicknessWrapper = document.querySelector('#calc_milling_form .thickness__wrapper');
+        const checkboxMillingMaterialClient = document.getElementById('milling_material_client');
+        const inputMillingCuttingLength = document.getElementById('milling_cutting_length');
+        const inputMillingArea = document.getElementById('milling_sheet_area');
+        const outputMillingCut = document.getElementById('output_milling_cut');
+        const outputMillingHoles = document.getElementById('output_milling_holes');
+        const outputMillingMaterial = document.getElementById('output_milling_material');
+        const outputMillingTotal = document.getElementById('output_milling_total');
+        const thicknessMillingWrapper = document.querySelector('#calc_milling_form .thickness__wrapper');
+        //* Инициализируем селекты и сразу дисейблим скрытые
+        const choicesMillingMaterial = new Choices(selectMillingMaterial, {
+            searchEnabled: false,
+            itemSelectText: '',
+            allowHTML: false,
+            shouldSort: false
+        });
+        const choicesMillingThicknessPvh = new Choices(selectMillingThicknessPvh, {
+            searchEnabled: false,
+            itemSelectText: '',
+            allowHTML: false,
+            shouldSort: false
+        });
+        const choicesMillingThicknessAcrylic = new Choices(selectMillingThicknessAcrylic, {
+            searchEnabled: false,
+            itemSelectText: '',
+            allowHTML: false,
+            shouldSort: false
+        }).disable();
+        const choicesMillingThicknessPlywood = new Choices(selectMillingThicknessPlywood, {
+            searchEnabled: false,
+            itemSelectText: '',
+            allowHTML: false,
+            shouldSort: false
+        }).disable();
+        const choicesMillingHolesDiameter = new Choices(selectHolesDiameter, {
+            searchEnabled: false,
+            itemSelectText: '',
+            allowHTML: false,
+            shouldSort: false
+        });
+        const choicesMillingThicknessArr = [
+            choicesMillingThicknessPvh,
+            choicesMillingThicknessAcrylic,
+            choicesMillingThicknessPlywood
+        ];
         document.getElementById('calculate_milling').addEventListener('click', calculateMilling);
-        selectMaterial.addEventListener('change', changeThicknessSelect);
+        selectMillingMaterial.addEventListener('change', handlerMillingThicknessSelect);
         function calculateMilling() {
-            const costCut = parseInt(inputCuttingLength.value) * getPriceCut() || 0;
+            const costCut = parseInt(inputMillingCuttingLength.value) * getPriceCut() || 0;
             const costHoles = parseInt(inputHolesAmount.value) * getPriceHole() || 0;
-            const costMaterial = checkboxMaterialClient.checked
+            const costMaterial = checkboxMillingMaterialClient.checked
                 ? 0
-                : parseInt(inputArea.value) * getCostMaterial() || 0;
-            outputCut.textContent = formatNumber(costCut);
-            outputHoles.textContent = formatNumber(costHoles);
-            outputMaterial.textContent = formatNumber(costMaterial);
+                : parseInt(inputMillingArea.value) * getPriceMaterial() || 0;
+            outputMillingCut.textContent = formatNumber(costCut);
+            outputMillingHoles.textContent = formatNumber(costHoles);
+            outputMillingMaterial.textContent = formatNumber(costMaterial);
+            outputMillingTotal.textContent = formatNumber(costCut + costHoles + costMaterial);
             function getPriceCut() {
-                const material = selectMaterial.options[selectMaterial.selectedIndex].value;
-                // const targetSelect: HTMLSelectElement = <HTMLSelectElement>document.getElementById(`milling_thickness_${material}`)
+                const material = selectMillingMaterial.value;
                 let targetSelect;
                 switch (material) {
                     case ('pvh'):
-                        targetSelect = selectThicknessPvh;
+                        targetSelect = selectMillingThicknessPvh;
                         break;
                     case ('acrylic'):
-                        targetSelect = selectThicknessAcrylic;
+                        targetSelect = selectMillingThicknessAcrylic;
                         break;
                     case ('plywood'):
-                        targetSelect = selectThicknessPlywood;
+                        targetSelect = selectMillingThicknessPlywood;
                         break;
                 }
-                return parseInt(targetSelect.options[targetSelect.selectedIndex].value);
+                return getDatasetPriceBySelect(targetSelect);
             }
             function getPriceHole() {
-                return parseInt(selectHolesDiameter.options[selectHolesDiameter.selectedIndex].value);
+                return getDatasetPriceBySelect(selectHolesDiameter);
             }
-            function getCostMaterial() {
-                return parseInt(selectMaterial.options[selectMaterial.selectedIndex].dataset.materialPrice);
+            function getPriceMaterial() {
+                return getDatasetPriceBySelect(selectMillingMaterial);
             }
         }
-        function changeThicknessSelect() {
-            const material = selectMaterial.options[selectMaterial.selectedIndex].value;
-            const targetWrapper = thicknessWrapper.querySelector(`.thickness_${material}`);
-            Array.from(thicknessWrapper.querySelectorAll('.thickness'))
-                .map((select) => select.style.display = 'none');
+        function handlerMillingThicknessSelect(event) {
+            const material = event.target.value;
+            changeMillingThicknessSelect("milling", material);
+        }
+        function changeMillingThicknessSelect(calculatorType, material) {
+            // const material: TMaterials = <TMaterials>event.target.value;
+            const targetWrapper = thicknessMillingWrapper.querySelector(`.thickness_${material}`);
+            choicesMillingThicknessArr.map(choiceJs => choiceJs.disable());
+            Array.from(thicknessMillingWrapper.querySelectorAll('.thickness'))
+                .map((selectWrapper) => selectWrapper.style.display = 'none');
             targetWrapper.style.display = 'block';
-            // [
-            //     selectThicknessPvh,
-            //     selectThicknessAcrylic,
-            //     selectThicknessPlywood,
-            // ].map(select => select.style.display = 'none')
+            switch (material) {
+                case ('pvh'):
+                    choicesMillingThicknessPvh.enable();
+                    break;
+                case ('acrylic'):
+                    choicesMillingThicknessAcrylic.enable();
+                    break;
+                case ('plywood'):
+                    choicesMillingThicknessPlywood.enable();
+                    break;
+            }
         }
         /**
-         * Инициализируем селекты
+         * Калькулятор лазерной резки
          */
-        // [
-        //     selectThicknessPvh,
-        //     selectThicknessAcrylic,
-        //     selectThicknessPlywood,
-        //     selectMaterial,
-        //     selectHolesDiameter,
-        // ].map(select => {
-        //     const choices = new Choices(select, {
-        //         allowHTML: false
-        //     })
-        // })
+        const selectLaserMaterial = document.getElementById('laser_material');
+        const selectLaserThicknessAcrylic = document.getElementById('laser_thickness_acrylic');
+        const selectLaserThicknessPlexiglas = document.getElementById('laser_thickness_plexiglas');
+        const selectLaserThicknessPet = document.getElementById('laser_thickness_pet');
+        const checkboxLaserMaterialClient = document.getElementById('laser_material_client');
+        const inputLaserCuttingLength = document.getElementById('laser_cutting_length');
+        const inputLaserArea = document.getElementById('laser_sheet_area');
+        const outputLaserCut = document.getElementById('output_laser_cut');
+        const outputLaserHoles = document.getElementById('output_laser_holes');
+        const outputLaserMaterial = document.getElementById('output_laser_material');
+        const outputLaserTotal = document.getElementById('output_laser_total');
+        const thicknessLaserWrapper = document.querySelector('#calc_laser_form .thickness__wrapper');
+        //* Инициализируем селекты и сразу дисейблим скрытые
+        const choicesLaserMaterial = new Choices(selectLaserMaterial, {
+            searchEnabled: false,
+            itemSelectText: '',
+            allowHTML: false,
+            shouldSort: false
+        });
+        const choicesLaserThicknessAcrylic = new Choices(selectLaserThicknessAcrylic, {
+            searchEnabled: false,
+            itemSelectText: '',
+            allowHTML: false,
+            shouldSort: false
+        });
+        const choicesLaserThicknessPvh = new Choices(selectLaserThicknessPlexiglas, {
+            searchEnabled: false,
+            itemSelectText: '',
+            allowHTML: false,
+            shouldSort: false
+        }).disable();
+        const choicesLaserThicknessPlywood = new Choices(selectLaserThicknessPet, {
+            searchEnabled: false,
+            itemSelectText: '',
+            allowHTML: false,
+            shouldSort: false
+        }).disable();
+        const choicesLaserThicknessArr = [
+            choicesLaserThicknessAcrylic,
+            choicesLaserThicknessPvh,
+            choicesLaserThicknessPlywood
+        ];
     })();
     const formatter = new Intl.NumberFormat("ru-RU", {});
     function formatNumber(value) {
