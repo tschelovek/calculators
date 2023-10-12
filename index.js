@@ -73,10 +73,11 @@ document.addEventListener('DOMContentLoaded', () => {
      * Калькуляторы фрезерной и лазерной резки
      */
     (function () {
+        //* Получаем значение цены из атрибута обёртки селекта
         function getDatasetPriceBySelect(select) {
             const dataContainer = select.closest('.data-container');
             const value = select.value;
-            return parseInt(dataContainer.dataset[`price_${value}`]);
+            return parseInt(dataContainer.dataset[`price_${value}`]) || 0;
         }
         /**
          * Калькулятор фрезерной резки
@@ -132,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
             choicesMillingThicknessPlywood
         ];
         document.getElementById('calculate_milling').addEventListener('click', calculateMilling);
-        selectMillingMaterial.addEventListener('change', handlerMillingThicknessSelect);
+        selectMillingMaterial.addEventListener('change', handlerThicknessSelect);
         function calculateMilling() {
             const costCut = parseInt(inputMillingCuttingLength.value) * getPriceCut() || 0;
             const costHoles = parseInt(inputHolesAmount.value) * getPriceHole() || 0;
@@ -147,13 +148,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const material = selectMillingMaterial.value;
                 let targetSelect;
                 switch (material) {
-                    case ('pvh'):
+                    case ('m_pvh'):
                         targetSelect = selectMillingThicknessPvh;
                         break;
-                    case ('acrylic'):
+                    case ('m_acrylic'):
                         targetSelect = selectMillingThicknessAcrylic;
                         break;
-                    case ('plywood'):
+                    case ('m_plywood'):
                         targetSelect = selectMillingThicknessPlywood;
                         break;
                 }
@@ -166,26 +167,41 @@ document.addEventListener('DOMContentLoaded', () => {
                 return getDatasetPriceBySelect(selectMillingMaterial);
             }
         }
-        function handlerMillingThicknessSelect(event) {
+        function handlerThicknessSelect(event) {
             const material = event.target.value;
-            changeMillingThicknessSelect("milling", material);
-        }
-        function changeMillingThicknessSelect(calculatorType, material) {
-            // const material: TMaterials = <TMaterials>event.target.value;
-            const targetWrapper = thicknessMillingWrapper.querySelector(`.thickness_${material}`);
-            choicesMillingThicknessArr.map(choiceJs => choiceJs.disable());
-            Array.from(thicknessMillingWrapper.querySelectorAll('.thickness'))
-                .map((selectWrapper) => selectWrapper.style.display = 'none');
+            const targetWrapper = document.querySelector(`.thickness_${material}`);
+            if (material.startsWith('m')) {
+                choicesMillingThicknessArr.map(choiceJs => choiceJs.disable());
+                Array.from(thicknessMillingWrapper.querySelectorAll('.thickness'))
+                    .map((selectWrapper) => selectWrapper.style.display = 'none');
+            }
+            if (material.startsWith('l')) {
+                choicesLaserThicknessArr.map(choiceJs => choiceJs.disable());
+                Array.from(thicknessLaserWrapper.querySelectorAll('.thickness'))
+                    .map((selectWrapper) => selectWrapper.style.display = 'none');
+            }
             targetWrapper.style.display = 'block';
+            enableThicknessSelect(material);
+        }
+        function enableThicknessSelect(material) {
             switch (material) {
-                case ('pvh'):
+                case ('m_pvh'):
                     choicesMillingThicknessPvh.enable();
                     break;
-                case ('acrylic'):
+                case ('m_acrylic'):
                     choicesMillingThicknessAcrylic.enable();
                     break;
-                case ('plywood'):
+                case ('m_plywood'):
                     choicesMillingThicknessPlywood.enable();
+                    break;
+                case ('l_acrylic'):
+                    choicesLaserThicknessAcrylic.enable();
+                    break;
+                case ('l_plexiglas'):
+                    choicesLaserThicknessPlexiglas.enable();
+                    break;
+                case ('l_pet'):
+                    choicesLaserThicknessPet.enable();
                     break;
             }
         }
@@ -198,9 +214,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const selectLaserThicknessPet = document.getElementById('laser_thickness_pet');
         const checkboxLaserMaterialClient = document.getElementById('laser_material_client');
         const inputLaserCuttingLength = document.getElementById('laser_cutting_length');
-        const inputLaserArea = document.getElementById('laser_sheet_area');
+        const inputLaserSheetArea = document.getElementById('laser_sheet_area');
+        const inputLaserSheetAmount = document.getElementById('laser_sheet_amount');
         const outputLaserCut = document.getElementById('output_laser_cut');
-        const outputLaserHoles = document.getElementById('output_laser_holes');
         const outputLaserMaterial = document.getElementById('output_laser_material');
         const outputLaserTotal = document.getElementById('output_laser_total');
         const thicknessLaserWrapper = document.querySelector('#calc_laser_form .thickness__wrapper');
@@ -217,13 +233,13 @@ document.addEventListener('DOMContentLoaded', () => {
             allowHTML: false,
             shouldSort: false
         });
-        const choicesLaserThicknessPvh = new Choices(selectLaserThicknessPlexiglas, {
+        const choicesLaserThicknessPlexiglas = new Choices(selectLaserThicknessPlexiglas, {
             searchEnabled: false,
             itemSelectText: '',
             allowHTML: false,
             shouldSort: false
         }).disable();
-        const choicesLaserThicknessPlywood = new Choices(selectLaserThicknessPet, {
+        const choicesLaserThicknessPet = new Choices(selectLaserThicknessPet, {
             searchEnabled: false,
             itemSelectText: '',
             allowHTML: false,
@@ -231,9 +247,39 @@ document.addEventListener('DOMContentLoaded', () => {
         }).disable();
         const choicesLaserThicknessArr = [
             choicesLaserThicknessAcrylic,
-            choicesLaserThicknessPvh,
-            choicesLaserThicknessPlywood
+            choicesLaserThicknessPlexiglas,
+            choicesLaserThicknessPet
         ];
+        document.getElementById('calculate_laser').addEventListener('click', calculateLaser);
+        selectLaserMaterial.addEventListener('change', handlerThicknessSelect);
+        function calculateLaser() {
+            const costCut = parseInt(inputLaserCuttingLength.value) * getPriceCut() || 0;
+            const costMaterial = checkboxLaserMaterialClient.checked
+                ? 0
+                : parseInt(inputLaserSheetArea.value) * parseInt(inputLaserSheetAmount.value) * getPriceMaterial() || 0;
+            outputLaserCut.textContent = formatNumber(costCut);
+            outputLaserMaterial.textContent = formatNumber(costMaterial);
+            outputLaserTotal.textContent = formatNumber(costCut + costMaterial);
+            function getPriceCut() {
+                const material = selectLaserMaterial.value;
+                let targetSelect;
+                switch (material) {
+                    case ('l_acrylic'):
+                        targetSelect = selectLaserThicknessAcrylic;
+                        break;
+                    case ('l_plexiglas'):
+                        targetSelect = selectLaserThicknessPlexiglas;
+                        break;
+                    case ('l_pet'):
+                        targetSelect = selectLaserThicknessPet;
+                        break;
+                }
+                return getDatasetPriceBySelect(targetSelect);
+            }
+            function getPriceMaterial() {
+                return getDatasetPriceBySelect(selectLaserMaterial);
+            }
+        }
     })();
     const formatter = new Intl.NumberFormat("ru-RU", {});
     function formatNumber(value) {

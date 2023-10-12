@@ -57,7 +57,7 @@
                 <fieldset>
                     <legend>Высота символов</legend>
                     <label for="plotter_symbols_height" class="hidden-label">Выбор высоты символов</label>
-                    <div class="select-wrapper plotter_symbols_data-container"
+                    <div class="select-wrapper data-container"
                          data-price-cut_2="350"
                          data-price-extract_2="500"
                          data-price-application_2="300"
@@ -160,14 +160,14 @@
                     <legend>Тип материала</legend>
                     <label for="milling_material" class="hidden-label">Тип материала</label>
                     <div class="select-wrapper data-container"
-                         data-price_pvh="300"
-                         data-price_acrylic="400"
-                         data-price_plywood="500"
+                         data-price_m_pvh="300"
+                         data-price_m_acrylic="400"
+                         data-price_m_plywood="500"
                     >
                         <select name="milling_material" id="milling_material">
-                            <option selected value="pvh">ПВХ</option>
-                            <option value="acrylic">Акрил</option>
-                            <option value="plywood">Фанера</option>
+                            <option selected value="m_pvh">ПВХ</option>
+                            <option value="m_acrylic">Акрил</option>
+                            <option value="m_plywood">Фанера</option>
                         </select>
                     </div>
                 </fieldset>
@@ -175,7 +175,7 @@
                 <fieldset>
                     <legend>Толщина материала, мм</legend>
                     <div class="thickness__wrapper">
-                        <div class="thickness thickness_pvh">
+                        <div class="thickness thickness_m_pvh">
                             <label for="milling_thickness_pvh" class="hidden-label">Толщина ПВХ</label>
                             <div class="select-wrapper data-container"
                                  data-price_3="50"
@@ -199,7 +199,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="thickness thickness_acrylic" style="display: none">
+                        <div class="thickness thickness_m_acrylic" style="display: none">
                             <label for="milling_thickness_acrylic" class="hidden-label">Толщина Акрила</label>
                             <div class="select-wrapper data-container"
                                  data-price_2="50"
@@ -220,7 +220,7 @@
                             </div>
 
                         </div>
-                        <div class="thickness thickness_plywood" style="display: none">
+                        <div class="thickness thickness_m_plywood" style="display: none">
                             <label for="milling_thickness_plywood" class="hidden-label">Толщина фанеры</label>
                             <div class="select-wrapper data-container"
                                  data-price_3="50"
@@ -340,14 +340,14 @@
                     <legend>Тип материала</legend>
                     <label for="laser_material" class="hidden-label">Тип материала</label>
                     <div class="select-wrapper data-container"
-                         data-price_acrylic="300"
-                         data-price_plexiglas="400"
-                         data-price_pet="500"
+                         data-price_l_acrylic="300"
+                         data-price_l_plexiglas="400"
+                         data-price_l_pet="500"
                     >
                         <select name="laser_material" id="laser_material">
-                            <option selected value="acrylic">Акрил</option>
-                            <option value="plexiglas">Оргстекло</option>
-                            <option value="pet">ПЭТ</option>
+                            <option selected value="l_acrylic">Акрил</option>
+                            <option value="l_plexiglas">Оргстекло</option>
+                            <option value="l_pet">ПЭТ</option>
                         </select>
                     </div>
                 </fieldset>
@@ -355,7 +355,7 @@
                 <fieldset>
                     <legend>Толщина материала, мм</legend>
                     <div class="thickness__wrapper">
-                        <div class="thickness thickness_acrylic">
+                        <div class="thickness thickness_l_acrylic">
                             <label for="laser_thickness_acrylic" class="hidden-label">Толщина Акрила</label>
                             <div class="select-wrapper data-container"
                                  data-price_1="30"
@@ -388,7 +388,7 @@
                             </div>
 
                         </div>
-                        <div class="thickness thickness_plexiglas" style="display: none">
+                        <div class="thickness thickness_l_plexiglas" style="display: none">
                             <label for="laser_thickness_plexiglas" class="hidden-label">Толщина оргстекла</label>
                             <div class="select-wrapper data-container"
                                  data-price_1="130"
@@ -420,7 +420,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="thickness thickness_pet" style="display: none">
+                        <div class="thickness thickness_l_pet" style="display: none">
                             <label for="laser_thickness_pet" class="hidden-label">Толщина ПЭТ</label>
                             <div class="select-wrapper data-container"
                                  data-price_5="50"

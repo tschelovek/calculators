@@ -32,6 +32,24 @@
   max-width: 500px;
 }
 
+.choices {
+  margin-top: 20px;
+  max-width: 100%;
+}
+.choices__inner {
+  box-sizing: border-box;
+  background-color: #2758D8;
+  color: white;
+  font-weight: 500;
+  border: none;
+}
+.choices__list--dropdown {
+  box-sizing: border-box;
+}
+.choices[data-type*=select-one]::after {
+  content: unset;
+}
+
 input:invalid {
   border: red;
 }
